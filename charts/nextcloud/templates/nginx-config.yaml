@@ -28,11 +28,11 @@
         #gzip  on;
 
         upstream php-handler {
-            server 127.0.0.1:9000;
+            server 127.0.0.1:{{ .Values.nginx.fpmContainerPort | default "9000" }};
         }
 
         server {
-            listen {{ .Values.nginx.containerPort | default "80" }};
+            listen {{ .Values.nextcloud.containerPort | default "80" }};
 
             # HSTS settings
             # WARNING: Only add the preload option once you read about

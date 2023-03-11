@@ -73,7 +73,12 @@ spec:
         {{- end }}
         env:
 {{- include "nextcloud.env" . | indent 8 }}
-        {{- if not .Values.nginx.enabled }}
+        {{- if .Values.nginx.enabled }}
+        ports:
+        - name: fpm
+          containerPort: {{ .Values.nginx.fpmContainerPort | default "9000" }}
+          protocol: TCP
+        {{- else }}
         ports:
         - name: http
           containerPort: {{ .Values.nextcloud.containerPort }}
@@ -351,13 +356,7 @@ spec:
           {{- toYaml . | nindent 8 }}
         {{- end }}
       {{- else }}
-        {{- if .Values.nginx.enabled }}
-        # Will mount configuration files as www-data (id: 82) for nextcloud
-        fsGroup: 82
-        {{- else }}
-        # Will mount configuration files as www-data (id: 33) for nextcloud
         fsGroup: 33
-        {{- end }}
         {{- if .Values.securityContext }}
           {{- with .Values.securityContext }}
             {{- toYaml . | nindent 8 }}

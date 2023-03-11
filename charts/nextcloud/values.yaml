@@ -216,6 +216,8 @@ nginx:
     pullPolicy: IfNotPresent
   containerPort: 80
 
+  fpmContainerPort: 9000
+
   config:
     # This generates the default nginx config as per the nextcloud documentation
     default: true
